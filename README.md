@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# social media service
+social media service is a mock social media website prototype designed for users to connect with friends and register using their email addresses. It provides basic functionalities such as adding friends, creating user profiles, and viewing user's friends. This project aims to demonstrate the fundamental features of a social networking platform while serving as a learning tool for web development enthusiasts.
+
+## Key Features
+- User registration and authentication via email
+- Profile creation and customization
+- Adding and removing friends
+- A render counter in register page in real time
+- A login page
+- A protected page to view a user's profile by user ID, and a button to add the user as a friend, if not already added or viewing one's own profile
+- A page to show a user's friends
+
+## Design and explanations
+
+### Framework
+- FE/BE: Nextjs
+- Storage & Database & Authentication & RealTime: Firebase
+- Container: Docker
+
+### REST API
+- POST: /api/v1/users
+Registration
+- POST: /api/v1/users/login
+Login
+- GET: /api/v1/users/{ID}
+Get user profile by ID
+- PATCH: /api/v1/users/{ID}
+Update User Info
+- POST: /api/v1/users/{ID}/friends
+Add user as friend
+- GET: /api/v1/users/{ID}/friends
+Get the user's friends
+
+### Websocket event
+- updateRegisterFormRenderedCount
+Send the notification of count.
+
+### Explanations
+Because this service is primarily focused on developing features for social media, there is a certain demand for concurrent read and write operations. Additionally, most of the stored data is in an unstructured format. Therefore, for the database, I choose to use a NoSQL DB.
+
+As I aim to simplify the email authentication process, I have decided to utilize Firebase for identity verification. Additionally, I leverage its existing Storage service and Realtime features, which help reduce the development costs associated with these functionalities.
 
 ## Getting Started
-
-First, run the development server:
+Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
