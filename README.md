@@ -13,11 +13,8 @@ social media service is a mock social media website prototype designed for users
 ## Design and explanations
 
 ### Framework
-- Database: MongoDB
-- Image Storage: Imgur
 - FE/BE: Nextjs
-- Email authentication: Firebase
-- Websocket: SocketIO
+- Storage & Database & Authentication & RealTime: Firebase
 - Container: Docker
 
 ### REST API
@@ -27,19 +24,21 @@ Registration
 Login
 - GET: /api/v1/users/{ID}
 Get user profile by ID
+- PATCH: /api/v1/users/{ID}
+Update User Info
 - POST: /api/v1/users/{ID}/friends
 Add user as friend
 - GET: /api/v1/users/{ID}/friends
 Get the user's friends
-- POST: /api/v1/register-form-rendered-count
-Add a register form rendered count from zero.
-- GET: /api/v1/register-form-rendered-count
-Get the register form rendered count
 
 ### Websocket event
 - updateRegisterFormRenderedCount
 Send the notification of count.
 
+### Explanations
+Because this service is primarily focused on developing features for social media, there is a certain demand for concurrent read and write operations. Additionally, most of the stored data is in an unstructured format. Therefore, for the database, I choose to use a NoSQL DB.
+
+As I aim to simplify the email authentication process, I have decided to utilize Firebase for identity verification. Additionally, I leverage its existing Storage service and Realtime features, which help reduce the development costs associated with these functionalities.
 
 ## Getting Started
 Run the development server:
