@@ -2,22 +2,34 @@
 
 import { UserProfileEntity } from "@/types/user";
 import { updateUserProfile } from "@/utils/auth";
-import { setUserProfile } from "@/utils/database";
+import { getUserProfileById, setUserProfile } from "@/utils/database";
 import { auth } from "@/utils/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ProfileForm = () => {
+interface ProfileFormProps {
+  userId: string;
+}
+
+const ProfileForm = (props: ProfileFormProps) => {
+  const { userId } = props;
   // TODO: react-hook-form
   const [profile, setProfile] = useState<UserProfileEntity>({
-    uid: auth?.currentUser?.uid ?? "",
+    uid: userId,
     displayName: "",
-    email: auth?.currentUser?.email ?? "",
+    email: "",
     phoneNumber: "",
     photoURL:
-      auth?.currentUser?.photoURL ??
-      "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg",
     company: "",
   });
+
+  useEffect(() => {
+    getUserProfileById(userId).then((data) => {
+      if (data) {
+        setProfile(data);
+      }
+    });
+  }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

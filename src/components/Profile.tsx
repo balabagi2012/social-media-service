@@ -1,5 +1,6 @@
 import { getUserProfileById } from "@/utils/database";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProfileProps {
   userId: string;
@@ -23,6 +24,8 @@ const Profile = async (props: ProfileProps) => {
         width={60}
         height={60}
       />
+      {/* TODO: judge if userId === auth.currentUser.uid */}
+      <Link href={`/${userId}/profileSetting`}>Edit Profile</Link>
     </div>
   );
   return;
