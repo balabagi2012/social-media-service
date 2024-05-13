@@ -1,31 +1,52 @@
+"use client";
+import { UserProfileEntity } from "@/types/user";
 import { getUserProfileById } from "@/utils/database";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface ProfileProps {
   userId: string;
 }
 
-const Profile = async (props: ProfileProps) => {
+const Profile = (props: ProfileProps) => {
   const { userId } = props;
-  const profileData = await getUserProfileById(userId);
-  if (!profileData) {
+  const [profile, setProfile] = useState<UserProfileEntity | null>(null);
+
+  useEffect(() => {
+    getUserProfileById(userId).then((data) => {
+      if (data) {
+        setProfile(data);
+      }
+    });
+  }, [userId]);
+
+  const addFriend = async () => {};
+
+  const removeFriend = async () => {};
+
+  if (!profile) {
     return <div>Profile not found</div>;
   }
+
   return (
     <div>
-      <h3>{profileData.displayName}</h3>
-      <p>{profileData.email}</p>
-      <p>{profileData.phoneNumber}</p>
-      <p>{profileData.company}</p>
+      <h3>{profile.displayName}</h3>
+      <p>{profile.email}</p>
+      <p>{profile.phoneNumber}</p>
+      <p>{profile.company}</p>
       <Image
-        src={profileData.photoURL}
-        alt={profileData.displayName}
+        src={profile.photoURL}
+        alt={profile.displayName}
         width={60}
         height={60}
       />
       {/* TODO: judge if userId === auth.currentUser.uid */}
       <Link href={`/${userId}/profileSetting`}>Edit Profile</Link>
+      {/* TODO: judge if userId === auth.currentUser.uid */}
+      <button onClick={addFriend}>Add Friend</button>
+      <button onClick={removeFriend}>Remove Friend</button>
+      <Link href={`/${userId}/friends`}>View Friends</Link>
     </div>
   );
   return;

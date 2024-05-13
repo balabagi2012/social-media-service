@@ -1,5 +1,12 @@
 import { UserProfileEntity } from "@/types/user";
-import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteField,
+  doc,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 export const addRegisterFormRenderedCount = async () => {
@@ -28,4 +35,24 @@ export const getUserProfileById = async (
   } else {
     return null;
   }
+};
+
+export const addUserFriend = async (userId: string, myId: string) => {
+  if (userId === myId) {
+    console.log("Error: Invalid ID received");
+    return null;
+  }
+  return await updateDoc(doc(db, "users", userId), {
+    [`friends.${myId}`]: true,
+  });
+};
+
+export const removeUserFriend = async (userId: string, myId: string) => {
+  if (userId === myId) {
+    console.log("Error: Invalid ID received");
+    return null;
+  }
+  return await updateDoc(doc(db, "users", userId), {
+    [`friends.${myId}`]: deleteField(),
+  });
 };
