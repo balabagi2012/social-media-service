@@ -1,14 +1,7 @@
 import RegisterFormRenderedCount from "@/components/RegisterFormRenderedCount";
-import { db } from "@/utils/firebase";
-import { doc, increment, updateDoc } from "firebase/firestore";
+import { addRegisterFormRenderedCount } from "@/utils/database";
 import Image from "next/image";
 import styles from "./page.module.css";
-
-const addRegisterFormRenderedCount = async () => {
-  return await updateDoc(doc(db, "systemLog", "website"), {
-    registerFormRenderedCount: increment(1),
-  });
-};
 
 export default async function Home() {
   await addRegisterFormRenderedCount();
