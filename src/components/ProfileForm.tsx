@@ -1,18 +1,46 @@
 "use client";
 
-import { use, useState } from "react";
+import { UserProfileEntity } from "@/types/user";
+import { updateUserProfile } from "@/utils/auth";
+import { setUserProfile } from "@/utils/database";
+import { auth } from "@/utils/firebase";
+import { useState } from "react";
 
 const ProfileForm = () => {
   // TODO: react-hook-form
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<UserProfileEntity>({
+    uid: auth?.currentUser?.uid ?? "",
     displayName: "",
-    email: "",
+    email: auth?.currentUser?.email ?? "",
     phoneNumber: "",
-    photoURL: "",
+    photoURL:
+      auth?.currentUser?.photoURL ??
+      "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
     company: "",
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await Promise.all([
+        updateUserProfile({
+          ...profile,
+          email: auth?.currentUser?.email ?? "",
+          uid: auth?.currentUser?.uid ?? "",
+        }),
+        setUserProfile({
+          ...profile,
+          email: auth?.currentUser?.email ?? "",
+          uid: auth?.currentUser?.uid ?? "",
+        }),
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  };
+
+  //  TODO: Effect to fetch user profile
 
   return (
     <form onSubmit={handleSubmit}>
