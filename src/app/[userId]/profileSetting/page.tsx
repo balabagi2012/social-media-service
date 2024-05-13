@@ -1,15 +1,17 @@
+import ProfileForm from "@/components/ProfileForm";
 import RegisterFormRenderedCount from "@/components/RegisterFormRenderedCount";
-import SignUpForm from "@/components/SignUpForm";
 import { addRegisterFormRenderedCount } from "@/utils/database";
 
-const SignUpPage = async () => {
+const UserProfileSettingPage = async () => {
   await addRegisterFormRenderedCount();
+
   return (
     <main>
-      <SignUpForm />
+      <h1>User Profile Setting Page</h1>
+      <ProfileForm />
       <RegisterFormRenderedCount />
     </main>
   );
 };
 
-export default SignUpPage;
+export default UserProfileSettingPage;

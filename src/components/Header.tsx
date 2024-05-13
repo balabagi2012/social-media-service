@@ -12,10 +12,13 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
+      console.log(user)
       if (!user) {
-        router.push("/auth/signIn");
+        router.push("/auth");
       } else if (!user.emailVerified) {
         router.push("/auth/emailVerification");
+      } else if (!user.photoURL) {
+        router.push(`/${user.uid}/profileSetting`);
       }
     });
     return () => unsubscribe();

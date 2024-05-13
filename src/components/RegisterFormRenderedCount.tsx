@@ -17,7 +17,11 @@ const RegisterFormRenderedCount = () => {
     return () => unsubscribe();
   }, []);
 
-  return <div>{data?.registerFormRenderedCount ?? "Loading"}</div>;
+  return (
+    <div>
+      The register form rendered times: {data?.registerFormRenderedCount ?? "Loading"}
+    </div>
+  );
 };
 
 export default RegisterFormRenderedCount;
