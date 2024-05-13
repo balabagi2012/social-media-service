@@ -1,6 +1,7 @@
 "use client";
 
 import { signInUserWithEmailAndPassword } from "@/utils/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -34,6 +35,7 @@ const SignInForm = () => {
         placeholder="Password"
       />
       <button type="submit">Sign In</button>
+      <Link href="/auth/signUp">Sign Up</Link>
     </form>
   );
 };

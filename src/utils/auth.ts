@@ -41,14 +41,3 @@ export const signInUserWithEmailAndPassword = async (
     return null;
   }
 };
-
-export const verifyAuth = async () => {
-  const user = auth.currentUser;
-  if (!user) {
-    return { verifyAuth: false, redirectPath: "/auth/signIn" };
-  } else if (!user.emailVerified) {
-    return { verifyAuth: false, redirectPath: "/auth/emailVerification" };
-  } else {
-    return { verifyAuth: true, redirectPath: "/" };
-  }
-};
