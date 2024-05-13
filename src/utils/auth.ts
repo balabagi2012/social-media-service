@@ -1,9 +1,12 @@
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import { UserProfileEntity } from "@/types/user";
 
 export const signUpUserWithEmailAndPassword = async (
   email: string,
@@ -36,6 +39,22 @@ export const signInUserWithEmailAndPassword = async (
     );
     const user = userCredential.user;
     return user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const updateUserProfile = async (profile: UserProfileEntity) => {
+  try {
+    if (auth.currentUser) {
+      const { displayName, photoURL } = profile;
+      await updateProfile(auth.currentUser, {
+        displayName,
+        photoURL,
+      });
+    }
+    return;
   } catch (error) {
     console.log(error);
     return null;

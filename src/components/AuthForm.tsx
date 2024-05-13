@@ -1,18 +1,28 @@
 "use client";
 
-import { signInUserWithEmailAndPassword } from "@/utils/auth";
-import Link from "next/link";
+import {
+  signInUserWithEmailAndPassword,
+  signUpUserWithEmailAndPassword,
+} from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const SignInForm = () => {
+const AuthForm = () => {
+  const [type, setType] = useState<"signIn" | "signUp">("signIn");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  const switchAuthType = () => {
+    setType(type === "signIn" ? "signUp" : "signIn");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = await signInUserWithEmailAndPassword(email, password);
+    const user =
+      type === "signIn"
+        ? await signInUserWithEmailAndPassword(email, password)
+        : await signUpUserWithEmailAndPassword(email, password);
     if (!user?.emailVerified) {
       router.push("/auth/emailVerification");
     } else {
@@ -34,10 +44,12 @@ const SignInForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button type="submit">Sign In</button>
-      <Link href="/auth/signUp">Sign Up</Link>
+      <button type="submit">{`Sign ${type === "signIn" ? "In" : "Up"}`}</button>
+      <button onClick={switchAuthType}>{`Sign ${
+        type === "signIn" ? "Up" : "In"
+      }`}</button>
     </form>
   );
 };
 
-export default SignInForm;
+export default AuthForm;
