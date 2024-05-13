@@ -2,6 +2,7 @@
 
 import { auth } from "@/utils/firebase";
 import { User, getAuth, signOut } from "firebase/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -30,8 +31,8 @@ const Header = () => {
 
   return (
     <header>
-      {user && <p>{user?.email}</p>}
-      {user && <button onClick={signOutUser}>logout</button>}
+      {user && <Link href={`/${user.uid}`}>{user?.email}</Link>}
+      {user && <button onClick={signOutUser}>Sign Out</button>}
     </header>
   );
 };

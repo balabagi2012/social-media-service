@@ -4,6 +4,7 @@ import { UserProfileEntity } from "@/types/user";
 import { updateUserProfile } from "@/utils/auth";
 import { getUserProfileById, setUserProfile } from "@/utils/database";
 import { auth } from "@/utils/firebase";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface ProfileFormProps {
@@ -12,6 +13,7 @@ interface ProfileFormProps {
 
 const ProfileForm = (props: ProfileFormProps) => {
   const { userId } = props;
+
   // TODO: react-hook-form
   const [profile, setProfile] = useState<UserProfileEntity>({
     uid: userId,
@@ -22,6 +24,8 @@ const ProfileForm = (props: ProfileFormProps) => {
       "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg",
     company: "",
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     getUserProfileById(userId).then((data) => {
@@ -46,6 +50,7 @@ const ProfileForm = (props: ProfileFormProps) => {
           uid: auth?.currentUser?.uid ?? "",
         }),
       ]);
+      router.push(`/${userId}`);
     } catch (error) {
       console.log(error);
     }
