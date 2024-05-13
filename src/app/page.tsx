@@ -1,19 +1,9 @@
-import RegisterFormRenderedCount from "@/components/RegisterFormRenderedCount";
-import { addRegisterFormRenderedCount } from "@/utils/database";
 import Image from "next/image";
 import styles from "./page.module.css";
 
 export default async function Home() {
-  await addRegisterFormRenderedCount();
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-      </div>
-
       <div className={styles.center}>
         <Image
           className={styles.logo}
@@ -23,20 +13,6 @@ export default async function Home() {
           height={37}
           priority
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Viewing <span>-&gt;</span>
-          </h2>
-          <RegisterFormRenderedCount></RegisterFormRenderedCount>
-        </a>
       </div>
     </main>
   );
