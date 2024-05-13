@@ -12,7 +12,6 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      console.log(user)
       if (!user) {
         router.push("/auth");
       } else if (!user.emailVerified) {
