@@ -1,6 +1,6 @@
 import ProfileForm from "@/components/ProfileForm";
 import RegisterFormRenderedCount from "@/components/RegisterFormRenderedCount";
-import { addRegisterFormRenderedCount } from "@/utils/database";
+import { addRegisterFormRenderedCount } from "@/libs/database";
 
 const UserProfileSettingPage = async ({
   params,

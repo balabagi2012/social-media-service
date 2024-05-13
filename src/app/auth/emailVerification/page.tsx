@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/utils/firebase";
+import { auth } from "@/libs/firebase";
 import { useRouter } from "next/navigation";
 
 const EmailVerificationPage = () => {

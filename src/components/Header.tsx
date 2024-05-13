@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/utils/firebase";
+import { auth } from "@/libs/firebase";
 import { User, getAuth, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

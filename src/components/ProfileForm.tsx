@@ -1,9 +1,9 @@
 "use client";
 
 import { UserProfileEntity } from "@/types/user";
-import { updateUserProfile } from "@/utils/auth";
-import { getUserProfileById, setUserProfile } from "@/utils/database";
-import { auth } from "@/utils/firebase";
+import { updateUserProfile } from "@/libs/auth";
+import { getUserProfileById, setUserProfile } from "@/libs/database";
+import { auth } from "@/libs/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

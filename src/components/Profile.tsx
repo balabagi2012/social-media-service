@@ -1,6 +1,6 @@
 "use client";
 import { UserProfileEntity } from "@/types/user";
-import { getUserProfileById } from "@/utils/database";
+import { getUserProfileById } from "@/libs/database";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
