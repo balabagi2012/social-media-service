@@ -10,11 +10,11 @@ const EmailVerificationPage = () => {
     try {
       if (auth.currentUser) {
         await auth.currentUser.reload();
-      }
-      if (auth.currentUser?.emailVerified) {
-        router.replace("/");
-      } else {
-        window.alert("Email is not verified yet.");
+        if (auth.currentUser.emailVerified) {
+          router.push(`/${auth.currentUser.uid}`);
+        } else {
+          window.alert("Email is not verified yet.");
+        }
       }
     } catch (error) {
       console.error(error);

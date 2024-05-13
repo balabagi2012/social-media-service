@@ -94,6 +94,7 @@ const Profile = (props: ProfileProps) => {
         </>
       )}
       <Link href={`/${userId}/friends`}>View Friends</Link>
+      <p>{JSON.stringify(Object.keys(profile.friends ?? {}).join(","))}</p>
     </div>
   );
   return;

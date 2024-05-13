@@ -12,6 +12,7 @@ const Header = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      console.log(user);
       setUser(user);
       if (!user) {
         router.push("/auth");
@@ -31,7 +32,11 @@ const Header = () => {
 
   return (
     <header>
-      {user && <Link href={`/${user.uid}`}>{user?.email}</Link>}
+      {user ? (
+        <Link href={`/${user.uid}`}>{user?.email}</Link>
+      ) : (
+        "Authenticating..."
+      )}
       {user && <button onClick={signOutUser}>Sign Out</button>}
     </header>
   );

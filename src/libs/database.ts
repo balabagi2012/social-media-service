@@ -42,9 +42,15 @@ export const addUserFriend = async (userId: string, myId: string) => {
     console.log("Error: Invalid ID received");
     return null;
   }
-  return await updateDoc(doc(db, "users", userId), {
-    [`friends.${myId}`]: true,
-  });
+  // TODO: Transaction
+  return await Promise.all([
+    updateDoc(doc(db, "users", userId), {
+      [`friends.${myId}`]: true,
+    }),
+    updateDoc(doc(db, "users", myId), {
+      [`friends.${userId}`]: true,
+    }),
+  ]);
 };
 
 export const removeUserFriend = async (userId: string, myId: string) => {
@@ -52,7 +58,13 @@ export const removeUserFriend = async (userId: string, myId: string) => {
     console.log("Error: Invalid ID received");
     return null;
   }
-  return await updateDoc(doc(db, "users", userId), {
-    [`friends.${myId}`]: deleteField(),
-  });
+  // TODO: Transaction
+  return await Promise.all([
+    updateDoc(doc(db, "users", userId), {
+      [`friends.${myId}`]: deleteField(),
+    }),
+    updateDoc(doc(db, "users", myId), {
+      [`friends.${userId}`]: deleteField(),
+    }),
+  ]);
 };
