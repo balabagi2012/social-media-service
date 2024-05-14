@@ -1,9 +1,9 @@
 "use client";
 
 import { UserProfileEntity } from "@/types/user";
-import { updateUserProfile } from "@/utils/auth";
-import { getUserProfileById, setUserProfile } from "@/utils/database";
-import { auth } from "@/utils/firebase";
+import { updateUserProfile } from "@/libs/auth";
+import { getUserProfileById, setUserProfile } from "@/libs/database";
+import { auth } from "@/libs/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,6 +23,7 @@ const ProfileForm = (props: ProfileFormProps) => {
     photoURL:
       "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg",
     company: "",
+    friends: {},
   });
 
   const router = useRouter();

@@ -1,7 +1,7 @@
 "use client";
 
 import SystemLogEntity from "@/types/systemLog";
-import { db } from "@/utils/firebase";
+import { db } from "@/libs/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 

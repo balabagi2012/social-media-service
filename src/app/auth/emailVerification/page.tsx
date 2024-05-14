@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/utils/firebase";
+import { auth } from "@/libs/firebase";
 import { useRouter } from "next/navigation";
 
 const EmailVerificationPage = () => {
@@ -10,11 +10,11 @@ const EmailVerificationPage = () => {
     try {
       if (auth.currentUser) {
         await auth.currentUser.reload();
-      }
-      if (auth.currentUser?.emailVerified) {
-        router.replace("/");
-      } else {
-        window.alert("Email is not verified yet.");
+        if (auth.currentUser.emailVerified) {
+          router.push(`/${auth.currentUser.uid}`);
+        } else {
+          window.alert("Email is not verified yet.");
+        }
       }
     } catch (error) {
       console.error(error);

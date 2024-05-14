@@ -5,4 +5,5 @@ export interface UserProfileEntity {
   phoneNumber: string;
   photoURL: string;
   company: string;
+  friends: Record<string, boolean>;
 }

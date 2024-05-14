@@ -3,7 +3,7 @@
 import {
   signInUserWithEmailAndPassword,
   signUpUserWithEmailAndPassword,
-} from "@/utils/auth";
+} from "@/libs/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

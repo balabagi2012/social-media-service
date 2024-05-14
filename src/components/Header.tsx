@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/utils/firebase";
+import { auth } from "@/libs/firebase";
 import { User, getAuth, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,11 @@ const Header = () => {
 
   return (
     <header>
-      {user && <Link href={`/${user.uid}`}>{user?.email}</Link>}
+      {user ? (
+        <Link href={`/${user.uid}`}>{user?.email}</Link>
+      ) : (
+        "Authenticating..."
+      )}
       {user && <button onClick={signOutUser}>Sign Out</button>}
     </header>
   );
