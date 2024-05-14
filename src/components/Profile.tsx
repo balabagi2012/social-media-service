@@ -6,9 +6,9 @@ import {
 } from "@/libs/database";
 import { useMe } from "@/libs/hooks";
 import { UserProfileEntity } from "@/types/user";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ProfileArea from "./ProfileArea";
 
 interface ProfileProps {
   userId: string;
@@ -70,35 +70,32 @@ const Profile = (props: ProfileProps) => {
     return <div>Profile not found</div>;
   }
 
+  const renderEditProfile = () => {
+    return isMe && <Link href={`/${userId}/profileSetting`}>Edit Profile</Link>;
+  };
+
+  const renderFriendButton = () => {
+    if (!isMe) {
+      return isFriend ? (
+        <button onClick={removeFriend}>Remove Friend</button>
+      ) : (
+        <button onClick={addFriend}>Add Friend</button>
+      );
+    }
+  };
+
+  const renderViewFriends = (friends: string[]) => {
+    return (
+      <Link href={`/${userId}/friends`}>View Friends:({friends.length})</Link>
+    );
+  };
+
   return (
     <div>
-      <h3>{profile.displayName}</h3>
-      <p>{profile.email}</p>
-      <p>{profile.phoneNumber}</p>
-      <p>{profile.company}</p>
-      <Image
-        src={profile.photoURL}
-        alt={profile.displayName}
-        width={60}
-        height={60}
-      />
-      {isMe ? (
-        <Link href={`/${userId}/profileSetting`}>Edit Profile</Link>
-      ) : (
-        <>
-          {isFriend ? (
-            <button onClick={removeFriend}>Remove Friend</button>
-          ) : (
-            <button onClick={addFriend}>Add Friend</button>
-          )}
-        </>
-      )}
-      <Link href={`/${userId}/friends`}>View Friends</Link>
-      <p>
-        {profile.friends &&
-          Object.keys(profile.friends).length > 0 &&
-          JSON.stringify(Object.keys(profile.friends).join(","))}
-      </p>
+      <ProfileArea profile={profile} />
+      {renderEditProfile()}
+      {renderFriendButton()}
+      {renderViewFriends(Object.keys(profile.friends ?? {}))}
     </div>
   );
   return;

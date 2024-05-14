@@ -1,9 +1,12 @@
 import { UserProfileEntity } from "@/types/user";
 import {
+  collection,
   deleteField,
   doc,
   getDoc,
+  getDocs,
   increment,
+  query,
   runTransaction,
   setDoc,
   updateDoc,
@@ -78,4 +81,14 @@ export const removeUserFriend = async (userId: string, myId: string) => {
     console.log(error);
     return null;
   }
+};
+
+export const getUserProfiles = async (): Promise<UserProfileEntity[]> => {
+  const q = query(collection(db, "users"));
+  const querySnapshot = await getDocs(q);
+  const users: UserProfileEntity[] = [];
+  querySnapshot.forEach((doc) => {
+    users.push(doc.data() as UserProfileEntity);
+  });
+  return users;
 };
