@@ -1,6 +1,7 @@
 "use client";
 
 import { auth } from "@/libs/firebase";
+import { Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 const EmailVerificationPage = () => {
@@ -23,9 +24,14 @@ const EmailVerificationPage = () => {
 
   return (
     <main>
+      <Typography variant="h4">Email Verification Page</Typography>
       <section>
-        Your Email verification is pending. Please check your email.
-        <button onClick={reloadUser}>I have finished verification</button>
+        <Typography variant="body2">
+          Your Email verification is pending. Please check your email.
+        </Typography>
+        <Button variant="outlined" onClick={reloadUser}>
+          I have finished verification
+        </Button>
       </section>
     </main>
   );

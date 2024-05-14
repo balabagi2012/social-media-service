@@ -23,7 +23,7 @@ export const signUpUserWithEmailAndPassword = async (
     return user;
   } catch (error) {
     console.log(error);
-    return null;
+    throw error;
   }
 };
 
@@ -41,7 +41,7 @@ export const signInUserWithEmailAndPassword = async (
     return user;
   } catch (error) {
     console.log(error);
-    return null;
+    throw error;
   }
 };
 

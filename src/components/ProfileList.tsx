@@ -1,18 +1,14 @@
 import { getUserProfiles } from "@/libs/database";
-import ProfileArea from "./ProfileArea";
 import Link from "next/link";
+import ProfileArea from "./ProfileArea";
 
 const ProfileList = async () => {
   const profileList = await getUserProfiles();
-  return (
-    <div>
-      {profileList.map((profile) => (
-        <Link href={`/${profile.uid}`} key={profile.uid}>
-          <ProfileArea profile={profile} />
-        </Link>
-      ))}
-    </div>
-  );
+  return profileList.map((profile) => (
+    <Link href={`/${profile.uid}`} key={profile.uid}>
+      <ProfileArea profile={profile} />
+    </Link>
+  ));
 };
 
 export default ProfileList;

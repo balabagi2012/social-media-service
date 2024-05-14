@@ -1,9 +1,10 @@
 import Profile from "@/components/Profile";
+import { Typography } from "@mui/material";
 
 const UserPage = ({ params }: { params: { userId: string } }) => {
   return (
     <main>
-      <h1>User Profile Page </h1>
+      <Typography variant="h4">User Profile Page</Typography>
       <Profile userId={params.userId} />
     </main>
   );

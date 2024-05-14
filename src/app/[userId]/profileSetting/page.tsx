@@ -1,6 +1,7 @@
 import ProfileForm from "@/components/ProfileForm";
 import RegisterFormRenderedCount from "@/components/RegisterFormRenderedCount";
 import { addRegisterFormRenderedCount } from "@/libs/database";
+import { Typography } from "@mui/material";
 
 const UserProfileSettingPage = async ({
   params,
@@ -11,7 +12,7 @@ const UserProfileSettingPage = async ({
 
   return (
     <main>
-      <h1>User Profile Setting Page</h1>
+      <Typography variant="h4">User Profile Setting Page</Typography>
       <ProfileForm userId={params.userId} />
       <RegisterFormRenderedCount />
     </main>
