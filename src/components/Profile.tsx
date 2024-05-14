@@ -6,9 +6,11 @@ import {
 } from "@/libs/database";
 import { useMe } from "@/libs/hooks";
 import { UserProfileEntity } from "@/types/user";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProfileArea from "./ProfileArea";
+import { useRouter } from "next/navigation";
 
 interface ProfileProps {
   userId: string;
@@ -18,7 +20,9 @@ const Profile = (props: ProfileProps) => {
   const { userId } = props;
   const me = useMe();
   const [profile, setProfile] = useState<UserProfileEntity | null>(null);
-
+  const [friends, setFriends] = useState<UserProfileEntity[]>([]);
+  const [showFriends, setShowFriends] = useState(false);
+  const router = useRouter();
   const fetchProfile = async (userId: string) => {
     const data = await getUserProfileById(userId);
     if (data) {
@@ -35,6 +39,10 @@ const Profile = (props: ProfileProps) => {
   const isMe = me?.uid === userId;
 
   const isFriend = profile?.friends?.[me?.uid ?? ""] ?? false;
+
+  const editProfile = async () => {
+    router.push(`/${userId}/profileSetting`);
+  };
 
   const addFriend = async () => {
     if (me && profile) {
@@ -66,37 +74,93 @@ const Profile = (props: ProfileProps) => {
     }
   };
 
+  const viewFriend = async () => {
+    setShowFriends(true);
+  };
+
   if (!profile) {
     return <div>Profile not found</div>;
   }
 
   const renderEditProfile = () => {
-    return isMe && <Link href={`/${userId}/profileSetting`}>Edit Profile</Link>;
+    return (
+      isMe && (
+        <Button variant="outlined" onClick={editProfile}>
+          Edit Profile
+        </Button>
+      )
+    );
   };
 
   const renderFriendButton = () => {
     if (!isMe) {
       return isFriend ? (
-        <button onClick={removeFriend}>Remove Friend</button>
+        <Button variant="outlined" onClick={removeFriend}>
+          Remove Friend
+        </Button>
       ) : (
-        <button onClick={addFriend}>Add Friend</button>
+        <Button variant="outlined" onClick={addFriend}>
+          Add Friend
+        </Button>
       );
     }
   };
 
-  const renderViewFriends = (friends: string[]) => {
+  const renderViewFriends = () => {
     return (
-      <Link href={`/${userId}/friends`}>View Friends:({friends.length})</Link>
+      <Button variant="outlined" onClick={viewFriend} sx={{ ml: "auto" }}>
+        View Friend
+      </Button>
     );
   };
 
   return (
-    <div>
+    <Box>
       <ProfileArea profile={profile} />
-      {renderEditProfile()}
-      {renderFriendButton()}
-      {renderViewFriends(Object.keys(profile.friends ?? {}))}
-    </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {renderEditProfile()}
+        {renderFriendButton()}
+        {renderViewFriends()}
+      </Box>
+      <Modal
+        open={showFriends}
+        onClose={() => setShowFriends(false)}
+        sx={{
+          display: "flex",
+          p: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: (theme) => theme.shadows[5],
+            p: 4,
+          }}
+        >
+          <Typography sx={{ mb: 2 }} variant="body1">
+            {Object.keys(profile?.friends ?? {}).length !== 0
+              ? "Friends:"
+              : "There are no friends here"}
+          </Typography>
+          {Object.keys(profile?.friends ?? {}).map((friend: string) => (
+            <Typography key={friend} sx={{ mb: 2 }} variant="body1">
+              {friend}
+            </Typography>
+          ))}
+        </Box>
+      </Modal>
+    </Box>
   );
   return;
 };
