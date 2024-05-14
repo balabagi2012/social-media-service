@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   increment,
+  runTransaction,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -42,15 +43,20 @@ export const addUserFriend = async (userId: string, myId: string) => {
     console.log("Error: Invalid ID received");
     return null;
   }
-  // TODO: Transaction
-  return await Promise.all([
-    updateDoc(doc(db, "users", userId), {
-      [`friends.${myId}`]: true,
-    }),
-    updateDoc(doc(db, "users", myId), {
-      [`friends.${userId}`]: true,
-    }),
-  ]);
+  try {
+    await runTransaction(db, async (transaction) => {
+      transaction.update(doc(db, "users", userId), {
+        [`friends.${myId}`]: true,
+      });
+      transaction.update(doc(db, "users", myId), {
+        [`friends.${userId}`]: true,
+      });
+      return true;
+    });
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
 
 export const removeUserFriend = async (userId: string, myId: string) => {
@@ -58,13 +64,18 @@ export const removeUserFriend = async (userId: string, myId: string) => {
     console.log("Error: Invalid ID received");
     return null;
   }
-  // TODO: Transaction
-  return await Promise.all([
-    updateDoc(doc(db, "users", userId), {
-      [`friends.${myId}`]: deleteField(),
-    }),
-    updateDoc(doc(db, "users", myId), {
-      [`friends.${userId}`]: deleteField(),
-    }),
-  ]);
+  try {
+    await runTransaction(db, async (transaction) => {
+      transaction.update(doc(db, "users", userId), {
+        [`friends.${myId}`]: deleteField(),
+      });
+      transaction.update(doc(db, "users", myId), {
+        [`friends.${userId}`]: deleteField(),
+      });
+      return true;
+    });
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

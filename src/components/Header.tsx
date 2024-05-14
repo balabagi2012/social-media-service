@@ -12,7 +12,6 @@ const Header = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      console.log(user);
       setUser(user);
       if (!user) {
         router.push("/auth");
