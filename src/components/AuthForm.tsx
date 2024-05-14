@@ -4,6 +4,7 @@ import {
   signInUserWithEmailAndPassword,
   signUpUserWithEmailAndPassword,
 } from "@/libs/auth";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -31,24 +32,44 @@ const AuthForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      autoFocus
+      autoComplete="off"
+      sx={{ display: "flex", flexDirection: "column" }}
+    >
+      <TextField
+        fullWidth
+        variant="outlined"
+        label="Email"
         value={email}
+        type="email"
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        sx={{ mb: 2 }}
       />
-      <input
-        type="password"
+      <TextField
+        fullWidth
+        variant="outlined"
+        label="Password"
         value={password}
+        type="password"
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        sx={{ mb: 2 }}
       />
-      <button type="submit">{`Sign ${type === "signIn" ? "In" : "Up"}`}</button>
-      <button onClick={switchAuthType}>{`Sign ${
-        type === "signIn" ? "Up" : "In"
-      }`}</button>
-    </form>
+      <Button variant="contained" type="submit" sx={{ mb: 2 }}>{`Sign ${
+        type === "signIn" ? "In" : "Up"
+      }`}</Button>
+      <Typography
+        variant="body1"
+        onClick={switchAuthType}
+        sx={{ textAlign: "center", cursor: "pointer" }}
+      >
+        {type === "signIn"
+          ? "Haven't the account? Let's sign up"
+          : "Have the account? Let's sign in"}
+      </Typography>
+    </Box>
   );
 };
 
