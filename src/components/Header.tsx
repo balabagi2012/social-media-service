@@ -48,7 +48,7 @@ const Header = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            {user ? (
+            {user?.emailVerified && user?.photoURL ? (
               <IconButton
                 size="large"
                 edge="start"

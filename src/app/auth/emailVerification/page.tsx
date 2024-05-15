@@ -12,7 +12,7 @@ const EmailVerificationPage = () => {
       if (auth.currentUser) {
         await auth.currentUser.reload();
         if (auth.currentUser.emailVerified) {
-          router.push(`/${auth.currentUser.uid}`);
+          router.push(`/${auth.currentUser.uid}/profileSetting`);
         } else {
           window.alert("Email is not verified yet.");
         }
