@@ -111,7 +111,7 @@ const ProfileForm = (props: ProfileFormProps) => {
         name="photoURL"
         rules={{
           required: "Please upload your avatar",
-          min: 3,
+          minLength: { value: 3, message: "Please enter a valid URL" },
           pattern: /^https:\/\//,
         }}
         control={control}
@@ -145,7 +145,13 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="displayName"
         control={control}
-        rules={{ required: "Please enter your name", min: 2 }}
+        rules={{
+          required: "Please enter your name",
+          minLength: {
+            value: 2,
+            message: "Name must be at least 2 characters",
+          },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -153,6 +159,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Name"
             type="text"
+            FormHelperTextProps={{ error: true }}
             helperText={errors?.displayName?.message}
             sx={{ mb: 2 }}
           />
@@ -161,7 +168,13 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="phoneNumber"
         control={control}
-        rules={{ required: "Please enter your phone number", min: 9 }}
+        rules={{
+          required: "Please enter your phone number",
+          minLength: {
+            value: 9,
+            message: "Phone number must be at least 9 digits",
+          },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -169,6 +182,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Phone"
             type="text"
+            FormHelperTextProps={{ error: true }}
             helperText={errors?.phoneNumber?.message}
             sx={{ mb: 2 }}
           />
@@ -177,7 +191,13 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="company"
         control={control}
-        rules={{ required: "Please enter your company", min: 2 }}
+        rules={{
+          required: "Please enter your company",
+          minLength: {
+            value: 2,
+            message: "Company must be at least 9 digits",
+          },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -185,6 +205,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Company"
             type="text"
+            FormHelperTextProps={{ error: true }}
             helperText={errors?.company?.message}
             sx={{ mb: 2 }}
           />

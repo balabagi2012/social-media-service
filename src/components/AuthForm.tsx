@@ -75,6 +75,14 @@ const AuthForm = () => {
       <Controller
         name="email"
         control={control}
+        rules={{
+          required: "Please enter your email",
+          minLength: {
+            value: 3,
+            message: "email must be at least 6 characters",
+          },
+          pattern: /^[\w-]+@([\w-]+\.)+[\w-]+$/,
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -82,9 +90,8 @@ const AuthForm = () => {
             variant="outlined"
             label="Email"
             type="email"
-            helperText={
-              errors.email ? errors.email.message : "Please enter your email"
-            }
+            FormHelperTextProps={{ error: true }}
+            helperText={errors?.email?.message}
             sx={{ mb: 2 }}
           />
         )}
@@ -92,6 +99,13 @@ const AuthForm = () => {
       <Controller
         name="password"
         control={control}
+        rules={{
+          required: "Please enter your password",
+          minLength: {
+            value: 6,
+            message: "Password must be at least 6 characters",
+          },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -99,11 +113,8 @@ const AuthForm = () => {
             variant="outlined"
             label="Password"
             type="password"
-            helperText={
-              errors.password
-                ? errors.password.message
-                : "Please enter your password"
-            }
+            FormHelperTextProps={{ error: true }}
+            helperText={errors?.password?.message}
             sx={{ mb: 2 }}
           />
         )}
@@ -112,6 +123,13 @@ const AuthForm = () => {
         <Controller
           name="repeatPassword"
           control={control}
+          rules={{
+            required: "Please repeat your password",
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters",
+            },
+          }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -119,11 +137,8 @@ const AuthForm = () => {
               variant="outlined"
               label="RepeatPassword"
               type="password"
-              helperText={
-                errors.repeatPassword
-                  ? errors.repeatPassword.message
-                  : "Please repeat your password"
-              }
+              FormHelperTextProps={{ error: true }}
+              helperText={errors?.repeatPassword?.message}
               sx={{ mb: 2 }}
             />
           )}
