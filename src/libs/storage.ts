@@ -23,7 +23,7 @@ export const uploadUserPicture = async (userId: string, file: string) => {
     return fileURL;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error("Failed to upload a picture");
   }
 };
 
@@ -38,7 +38,7 @@ export const removeUserPicture = async (userId: string, fileName: string) => {
     return;
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error("Failed to remove a picture");
   }
 };
 

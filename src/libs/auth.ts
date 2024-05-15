@@ -57,6 +57,6 @@ export const updateUserProfile = async (profile: UserProfileEntity) => {
     return;
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error("Failed to update auth profile");
   }
 };
