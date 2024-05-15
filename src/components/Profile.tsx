@@ -2,15 +2,17 @@
 import {
   addUserFriend,
   getUserProfileById,
+  getUserProfilesByIds,
   removeUserFriend,
 } from "@/libs/database";
 import { useMe } from "@/libs/hooks";
 import { UserProfileEntity } from "@/types/user";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Avatar, Box, Button, Modal, Typography } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import ProfileArea from "./ProfileArea";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Loading from "./Loading";
+import ProfileArea from "./ProfileArea";
 
 interface ProfileProps {
   userId: string;
@@ -21,12 +23,37 @@ const Profile = (props: ProfileProps) => {
   const me = useMe();
   const [profile, setProfile] = useState<UserProfileEntity | null>(null);
   const [friends, setFriends] = useState<UserProfileEntity[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [loadingFriends, setLoadingFriends] = useState(true);
   const [showFriends, setShowFriends] = useState(false);
   const router = useRouter();
+
   const fetchProfile = async (userId: string) => {
-    const data = await getUserProfileById(userId);
-    if (data) {
-      setProfile(data);
+    try {
+      setLoadingProfile(true);
+      const data = await getUserProfileById(userId);
+      if (data) {
+        setProfile(data);
+      }
+    } catch (error) {
+      console.log(error);
+      setError((error as Error).message);
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
+  const fetchFriends = async (friends: string[]) => {
+    try {
+      setLoadingFriends(true);
+      const data = await getUserProfilesByIds(friends);
+      setFriends(data);
+    } catch (error) {
+      console.log(error);
+      setError((error as Error).message);
+    } finally {
+      setLoadingFriends(false);
     }
   };
 
@@ -35,6 +62,12 @@ const Profile = (props: ProfileProps) => {
       fetchProfile(userId);
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (profile?.friends && Object.keys(profile.friends).length > 0) {
+      fetchFriends(Object.keys(profile.friends));
+    }
+  }, [profile?.friends]);
 
   const isMe = me?.uid === userId;
 
@@ -54,6 +87,7 @@ const Profile = (props: ProfileProps) => {
         });
       } catch (error) {
         console.log(error);
+        setError((error as Error).message);
       }
     }
   };
@@ -70,6 +104,7 @@ const Profile = (props: ProfileProps) => {
         });
       } catch (error) {
         console.log(error);
+        setError((error as Error).message);
       }
     }
   };
@@ -78,8 +113,14 @@ const Profile = (props: ProfileProps) => {
     setShowFriends(true);
   };
 
-  if (!profile) {
-    return <div>Profile not found</div>;
+  if (loadingProfile) {
+    return <Loading />;
+  } else if (!profile) {
+    return (
+      <Box>
+        <Typography variant="h4">User not found</Typography>
+      </Box>
+    );
   }
 
   const renderEditProfile = () => {
@@ -122,12 +163,22 @@ const Profile = (props: ProfileProps) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          mb: 2,
         }}
       >
         {renderEditProfile()}
         {renderFriendButton()}
         {renderViewFriends()}
       </Box>
+      {error && (
+        <Typography
+          variant="body2"
+          color="error"
+          sx={{ textAlign: "center", cursor: "pointer", mb: 2 }}
+        >
+          {error}
+        </Typography>
+      )}
       <Modal
         open={showFriends}
         onClose={() => setShowFriends(false)}
@@ -153,11 +204,27 @@ const Profile = (props: ProfileProps) => {
               ? "Friends:"
               : "There are no friends here"}
           </Typography>
-          {Object.keys(profile?.friends ?? {}).map((friend: string) => (
-            <Typography key={friend} sx={{ mb: 2 }} variant="body1">
-              {friend}
-            </Typography>
-          ))}
+          {loadingFriends ? (
+            <Loading />
+          ) : (
+            friends.map((friend) => (
+              <Box
+                key={friend.uid}
+                sx={{
+                  mb: 2,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <Avatar alt={friend.displayName} src={friend.photoURL} />
+                <Typography variant="body1">
+                  <Link href={`/${friend.uid}`}> {friend.displayName}</Link>
+                </Typography>
+              </Box>
+            ))
+          )}
         </Box>
       </Modal>
     </Box>

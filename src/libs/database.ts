@@ -10,6 +10,7 @@ import {
   runTransaction,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -89,6 +90,18 @@ export const removeUserFriend = async (userId: string, myId: string) => {
 
 export const getUserProfiles = async (): Promise<UserProfileEntity[]> => {
   const q = query(collection(db, "users"));
+  const querySnapshot = await getDocs(q);
+  const users: UserProfileEntity[] = [];
+  querySnapshot.forEach((doc) => {
+    users.push(doc.data() as UserProfileEntity);
+  });
+  return users;
+};
+
+export const getUserProfilesByIds = async (
+  ids: string[]
+): Promise<UserProfileEntity[]> => {
+  const q = query(collection(db, "users"), where("uid", "in", ids));
   const querySnapshot = await getDocs(q);
   const users: UserProfileEntity[] = [];
   querySnapshot.forEach((doc) => {
