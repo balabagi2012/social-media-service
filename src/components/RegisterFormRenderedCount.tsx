@@ -4,6 +4,8 @@ import SystemLogEntity from "@/types/systemLog";
 import { db } from "@/libs/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import Loading from "./Loading";
 
 const RegisterFormRenderedCount = () => {
   const [data, setData] = useState<SystemLogEntity | null>(null);
@@ -18,9 +20,16 @@ const RegisterFormRenderedCount = () => {
   }, []);
 
   return (
-    <div>
-      The register form rendered times: {data?.registerFormRenderedCount ?? "Loading"}
-    </div>
+    <Box>
+      <Typography variant="h6">Register Form Rendered Count:</Typography>
+      {data?.registerFormRenderedCount ? (
+        <Typography variant="body2">
+          {data?.registerFormRenderedCount}
+        </Typography>
+      ) : (
+        <Loading />
+      )}
+    </Box>
   );
 };
 

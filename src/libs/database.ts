@@ -15,13 +15,23 @@ import {
 import { db } from "./firebase";
 
 export const addRegisterFormRenderedCount = async () => {
-  return await updateDoc(doc(db, "systemLog", "website"), {
-    registerFormRenderedCount: increment(1),
-  });
+  try {
+    return await updateDoc(doc(db, "systemLog", "website"), {
+      registerFormRenderedCount: increment(1),
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update register form rendered count");
+  }
 };
 
 export const setUserProfile = async (profile: UserProfileEntity) => {
-  return await setDoc(doc(db, "users", profile.uid), { ...profile });
+  try {
+    return await setDoc(doc(db, "users", profile.uid), { ...profile });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to set user profile");
+  }
 };
 
 export const getUserProfileById = async (
@@ -34,7 +44,6 @@ export const getUserProfileById = async (
 
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
-
     if (docSnap.exists()) {
       return docSnap.data() as UserProfileEntity;
     } else {
@@ -42,14 +51,14 @@ export const getUserProfileById = async (
     }
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error("Failed to get user profile");
   }
 };
 
 export const addUserFriend = async (userId: string, myId: string) => {
   if (userId === myId) {
-    console.log("Error: Invalid ID received");
-    return null;
+    console.log("Error: Invalid IDs received");
+    throw new Error("Invalid IDs received");
   }
   try {
     await runTransaction(db, async (transaction) => {
@@ -63,7 +72,7 @@ export const addUserFriend = async (userId: string, myId: string) => {
     });
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error("Failed to add a friend");
   }
 };
 
@@ -90,24 +99,34 @@ export const removeUserFriend = async (userId: string, myId: string) => {
 
 // TODO: pagination feature
 export const getUserProfiles = async (): Promise<UserProfileEntity[]> => {
-  const q = query(collection(db, "users"));
-  const querySnapshot = await getDocs(q);
-  const users: UserProfileEntity[] = [];
-  querySnapshot.forEach((doc) => {
-    users.push(doc.data() as UserProfileEntity);
-  });
-  return users;
+  try {
+    const q = query(collection(db, "users"));
+    const querySnapshot = await getDocs(q);
+    const users: UserProfileEntity[] = [];
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data() as UserProfileEntity);
+    });
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to get user profiles");
+  }
 };
 
 // TODO: pagination feature
 export const getUserProfilesByIds = async (
   ids: string[]
 ): Promise<UserProfileEntity[]> => {
-  const q = query(collection(db, "users"), where("uid", "in", ids));
-  const querySnapshot = await getDocs(q);
-  const users: UserProfileEntity[] = [];
-  querySnapshot.forEach((doc) => {
-    users.push(doc.data() as UserProfileEntity);
-  });
-  return users;
+  try {
+    const q = query(collection(db, "users"), where("uid", "in", ids));
+    const querySnapshot = await getDocs(q);
+    const users: UserProfileEntity[] = [];
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data() as UserProfileEntity);
+    });
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to get user profiles by ids");
+  }
 };

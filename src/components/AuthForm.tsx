@@ -7,10 +7,12 @@ import {
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Loading from "./Loading";
 
 const AuthForm = () => {
   const [type, setType] = useState<"signIn" | "signUp">("signIn");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -22,10 +24,13 @@ const AuthForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
+      setLoading(true);
       const user =
         type === "signIn"
           ? await signInUserWithEmailAndPassword(email, password)
           : await signUpUserWithEmailAndPassword(email, password);
+      setLoading(false);
+
       if (user) {
         if (!user?.emailVerified) {
           router.push("/auth/emailVerification");
@@ -35,6 +40,7 @@ const AuthForm = () => {
       }
     } catch (error) {
       setError((error as Error).message);
+      setLoading(false);
     }
   };
 
@@ -78,6 +84,7 @@ const AuthForm = () => {
           ? "Haven't the account? Let's sign up"
           : "Have the account? Let's sign in"}
       </Typography>
+      {loading && <Loading />}
       {error && (
         <Typography
           variant="body2"
