@@ -88,6 +88,7 @@ export const removeUserFriend = async (userId: string, myId: string) => {
   }
 };
 
+// TODO: pagination feature
 export const getUserProfiles = async (): Promise<UserProfileEntity[]> => {
   const q = query(collection(db, "users"));
   const querySnapshot = await getDocs(q);
@@ -98,6 +99,7 @@ export const getUserProfiles = async (): Promise<UserProfileEntity[]> => {
   return users;
 };
 
+// TODO: pagination feature
 export const getUserProfilesByIds = async (
   ids: string[]
 ): Promise<UserProfileEntity[]> => {
