@@ -1,5 +1,5 @@
 "use client";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   signInUserWithEmailAndPassword,
