@@ -22,7 +22,6 @@ const ProfileForm = (props: ProfileFormProps) => {
   const {
     control,
     formState: { errors },
-    setValue,
     reset,
     handleSubmit,
   } = useForm<UserProfileEntity>({
@@ -110,6 +109,11 @@ const ProfileForm = (props: ProfileFormProps) => {
     >
       <Controller
         name="photoURL"
+        rules={{
+          required: "Please upload your avatar",
+          min: 3,
+          pattern: /^https:\/\//,
+        }}
         control={control}
         render={({ field }) => (
           <Box
@@ -141,6 +145,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="displayName"
         control={control}
+        rules={{ required: "Please enter your name", min: 2 }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -148,11 +153,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Name"
             type="text"
-            helperText={
-              errors.displayName
-                ? errors.displayName.message
-                : "Please enter your name"
-            }
+            helperText={errors?.displayName?.message}
             sx={{ mb: 2 }}
           />
         )}
@@ -160,6 +161,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="phoneNumber"
         control={control}
+        rules={{ required: "Please enter your phone number", min: 9 }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -167,11 +169,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Phone"
             type="text"
-            helperText={
-              errors.phoneNumber
-                ? errors.phoneNumber.message
-                : "Please enter your phone number"
-            }
+            helperText={errors?.phoneNumber?.message}
             sx={{ mb: 2 }}
           />
         )}
@@ -179,6 +177,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       <Controller
         name="company"
         control={control}
+        rules={{ required: "Please enter your company", min: 2 }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -186,11 +185,7 @@ const ProfileForm = (props: ProfileFormProps) => {
             variant="outlined"
             label="Company"
             type="text"
-            helperText={
-              errors.company
-                ? errors.company.message
-                : "Please enter your company"
-            }
+            helperText={errors?.company?.message}
             sx={{ mb: 2 }}
           />
         )}
