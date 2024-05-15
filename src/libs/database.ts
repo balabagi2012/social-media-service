@@ -26,18 +26,22 @@ export const setUserProfile = async (profile: UserProfileEntity) => {
 export const getUserProfileById = async (
   uid: string
 ): Promise<UserProfileEntity | null> => {
-  if (!uid) {
-    console.log("Error: Invalid ID received: ", uid);
-    return null;
-  }
+  try {
+    if (!uid) {
+      throw new Error(`Invalid ID received: ${uid}`);
+    }
 
-  const docRef = doc(db, "users", uid);
-  const docSnap = await getDoc(docRef);
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    return docSnap.data() as UserProfileEntity;
-  } else {
-    return null;
+    if (docSnap.exists()) {
+      return docSnap.data() as UserProfileEntity;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 };
 
