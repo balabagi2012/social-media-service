@@ -1,4 +1,5 @@
 "use client";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   signInUserWithEmailAndPassword,
@@ -9,22 +10,41 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Loading from "./Loading";
 
+interface AuthFormInput {
+  email: string;
+  password: string;
+  repeatPassword?: string;
+}
+
 const AuthForm = () => {
   const [type, setType] = useState<"signIn" | "signUp">("signIn");
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<AuthFormInput>({
+    defaultValues: {
+      email: "",
+      password: "",
+      repeatPassword: "",
+    },
+  });
 
   const switchAuthType = () => {
     setType(type === "signIn" ? "signUp" : "signIn");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (data: AuthFormInput) => {
     try {
-      e.preventDefault();
       setLoading(true);
+      const { email, password, repeatPassword } = data;
+      if (type === "signUp" && password !== repeatPassword) {
+        throw new Error("Passwords do not match");
+      }
       const user =
         type === "signIn"
           ? await signInUserWithEmailAndPassword(email, password)
@@ -47,31 +67,83 @@ const AuthForm = () => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       autoFocus
       autoComplete="off"
       sx={{ display: "flex", flexDirection: "column" }}
     >
-      <TextField
-        fullWidth
-        variant="outlined"
-        label="Email"
-        value={email}
-        type="email"
-        onChange={(e) => setEmail(e.target.value)}
-        helperText="Please enter your email"
-        sx={{ mb: 2 }}
+      <Controller
+        name="email"
+        control={control}
+        rules={{
+          required: "Please enter your email",
+          minLength: {
+            value: 3,
+            message: "email must be at least 6 characters",
+          },
+          pattern: /^[\w-]+@([\w-]+\.)+[\w-]+$/,
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            variant="outlined"
+            label="Email"
+            type="email"
+            FormHelperTextProps={{ error: true }}
+            helperText={errors?.email?.message}
+            sx={{ mb: 2 }}
+          />
+        )}
       />
-      <TextField
-        fullWidth
-        variant="outlined"
-        label="Password"
-        value={password}
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        helperText="Please enter your password"
-        sx={{ mb: 2 }}
+      <Controller
+        name="password"
+        control={control}
+        rules={{
+          required: "Please enter your password",
+          minLength: {
+            value: 6,
+            message: "Password must be at least 6 characters",
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            variant="outlined"
+            label="Password"
+            type="password"
+            FormHelperTextProps={{ error: true }}
+            helperText={errors?.password?.message}
+            sx={{ mb: 2 }}
+          />
+        )}
       />
+      {type === "signUp" && (
+        <Controller
+          name="repeatPassword"
+          control={control}
+          rules={{
+            required: "Please repeat your password",
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters",
+            },
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              fullWidth
+              variant="outlined"
+              label="RepeatPassword"
+              type="password"
+              FormHelperTextProps={{ error: true }}
+              helperText={errors?.repeatPassword?.message}
+              sx={{ mb: 2 }}
+            />
+          )}
+        />
+      )}
       <Button variant="contained" type="submit" sx={{ mb: 2 }}>{`Sign ${
         type === "signIn" ? "In" : "Up"
       }`}</Button>
