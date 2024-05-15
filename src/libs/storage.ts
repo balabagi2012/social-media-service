@@ -34,7 +34,6 @@ export const removeUserPicture = async (userId: string, fileName: string) => {
       `users/${userId}/profilePicture/${fileName}`
     );
     await deleteObject(storageRef);
-    console.log("Deleted a blob or file!");
     return;
   } catch (error) {
     console.log(error);
