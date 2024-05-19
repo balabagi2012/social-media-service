@@ -88,6 +88,7 @@ const AuthForm = () => {
             {...field}
             fullWidth
             variant="outlined"
+            id="email"
             label="Email"
             type="email"
             FormHelperTextProps={{ error: true }}
@@ -111,6 +112,7 @@ const AuthForm = () => {
             {...field}
             fullWidth
             variant="outlined"
+            id="password"
             label="Password"
             type="password"
             FormHelperTextProps={{ error: true }}
@@ -135,6 +137,7 @@ const AuthForm = () => {
               {...field}
               fullWidth
               variant="outlined"
+              id="repeatPassword"
               label="RepeatPassword"
               type="password"
               FormHelperTextProps={{ error: true }}
@@ -161,6 +164,7 @@ const AuthForm = () => {
         <Typography
           variant="body2"
           color="error"
+          id="error"
           sx={{ textAlign: "center", cursor: "pointer", mb: 2 }}
         >
           {error}
