@@ -6,7 +6,7 @@ describe('Navigation', () => {
         // Wait for auto redirect
         cy.wait(2000)
 
-        // The new url should include "/about"
+        // The new url should include "/auth"
         cy.url().should('include', '/auth')
 
         // The new page should contain an h4 with "User System"
@@ -20,7 +20,7 @@ describe('Navigation', () => {
         // Wait for auto redirect
         cy.wait(2000)
 
-        // The new url should include "/about"
+        // The new url should include "/auth"
         cy.url().should('include', '/auth')
 
         // The new page should contain an h4 with "User System"
