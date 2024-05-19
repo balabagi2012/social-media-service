@@ -1,5 +1,3 @@
-const { nanoid } = require("nanoid")
-
 describe('Navigation', () => {
     it('should navigate to the auth page when first load', () => {
         // Start from the index page

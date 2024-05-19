@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress:open": "cypress open"
+    "e2e": "cypress open"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
